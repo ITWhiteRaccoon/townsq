@@ -2,9 +2,19 @@
     <div id="app">
         <mu-container>
             <mu-paper :z-depth="1">
-                <mu-data-table :columns="columns" :sort.sync="sort" @sort-change="handleSortChange" :data="posts">
+                <mu-data-table no-data-text="Nothing here :(" :columns="columns" :sort.sync="sort"
+                               @sort-change="handleSortChange" :data="posts">
                     <template slot="expand" slot-scope="prop">
-                        <div><div></div></div>
+                        <div>
+                            <div>{{prop.row.name}}</div>
+                            <div>{{prop.row.username}}</div>
+                            <div>{{prop.row.email}}</div>
+                            <div>{{prop.row.phone}}</div>
+                        </div>
+                    </template>
+                    <template slot-scope="scope">
+                        <td>{{scope.row.userId}}</td>
+                        <td>{{scope.row.title}}</td>
                     </template>
                 </mu-data-table>
             </mu-paper>
@@ -13,24 +23,45 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
+    let posts = [];
+    let users = [];
+
     export default {
         data() {
             return {
-                posts: [
-                    {
-                        "userId": 1,
-                        "id": 1,
-                        "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-                        "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-                    },
-                    {
-                        "userId": 1,
-                        "id": 2,
-                        "title": "qui est esse",
-                        "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
+                sort: {
+                    name: '',
+                    order: 'asc'
+                },
+                columns: [
+                    {title: 'User ID', name: 'userId', align: 'center', sortable: true},
+                    {title: 'Title', name: 'title', align: 'center'}
+                ],
+                posts: posts,
+                users: users
+            };
+        },
+        mounted() {
+            axios
+                .get('http://jsonplaceholder.typicode.com/posts')
+                .then(response => (this.posts = response.data))
+                .catch(function (error) {
+                    if (error.response) {
+                        alert(error.data);
+                    } else if (error.request) {
+                        alert('No response from server.');
+                    } else {
+                        alert(error.message);
                     }
-                ]
+                });
+        },
+        methods: {
+            handleSortChange({name, order}) {
+                this.list = this.list.sort((a, b) => order === 'asc' ? a[name] - b[name] : b[name] - a[name]);
             }
+
         }
     };
 </script>
