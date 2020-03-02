@@ -10,6 +10,22 @@
                     {{getUserData(item.userId).username}}
                 </template>
                 <v-dialog v-model="dialog" persistent>
+                    <v-card>
+                        <v-card-title>
+                            Edit post #{{editingPostId}}
+                        </v-card-title>
+                        <v-card-text>
+                            <v-form v-model="validEdit">
+                                <v-container>
+                                    <v-row>
+                                        <v-col>
+
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
                 </v-dialog>
             </v-data-table>
         </v-content>
@@ -29,6 +45,8 @@
         data() {
             return {
                 dialog: false,
+                validEdit: false,
+                editingPostId: null,
                 headers: [
                     {text: 'ID', align: 'center', value: 'id'},
                     {text: 'Created By', align: 'center', value: 'userId'},
