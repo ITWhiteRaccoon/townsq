@@ -19,7 +19,8 @@
                                 <v-container>
                                     <v-row>
                                         <v-col>
-
+                                            <v-text-field label="Title" outlined></v-text-field>
+                                            <v-textarea label="Content" outlined></v-textarea>
                                         </v-col>
                                     </v-row>
                                 </v-container>
