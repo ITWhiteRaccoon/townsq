@@ -3,85 +3,90 @@
         <v-app-bar app color="primary" dark>
             <v-toolbar-title>TownSq</v-toolbar-title>
         </v-app-bar>
-        <v-content>
-            <v-data-table v-if="dataReady" :loading="!dataReady" loading-text="Nothing here :(" class="elevation-1"
-                          :headers="headers" :items-per-page="15"
-                          :items="posts">
-                <template v-slot:top>
-                    <v-toolbar flat>
-                        <v-toolbar-title>Posts</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-dialog v-model="dialog" persistent max-width="600px">
-                            <v-card>
-                                <v-card-title>
-                                    <span>Post #{{currentPostId}}</span>
-                                </v-card-title>
-                                <v-divider class="my-2"></v-divider>
-                                <v-card-text>
-                                    <v-container class="body-1 text--secondary">
-                                        <v-row>
-                                            <v-col>
-                                                <font-awesome-icon class="title text--primary"
-                                                                   icon="user"></font-awesome-icon>
-                                                {{editedItem.name}}
-                                            </v-col>
-                                            <v-col>
-                                                <font-awesome-icon class="title text--primary"
-                                                                   icon="at"></font-awesome-icon>
-                                                {{editedItem.username}}
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col>
-                                                <font-awesome-icon class="title text--primary"
-                                                                   icon="envelope"></font-awesome-icon>
-                                                {{editedItem.email}}
-                                            </v-col>
-                                            <v-col>
-                                                <font-awesome-icon class="title text--primary"
-                                                                   icon="phone"></font-awesome-icon>
-                                                {{editedItem.phone}}
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col>
-                                                <font-awesome-icon class="title text--primary"
-                                                                   icon="map-marked"></font-awesome-icon>
-                                                {{editedItem.address.suite}} {{editedItem.address.street}},
-                                                {{editedItem.address.city}} {{editedItem.address.zipcode}}
-                                            </v-col>
-                                        </v-row>
-                                        <v-divider class="my-8"></v-divider>
-                                        <v-row>
-                                            <v-col>
-                                                <v-text-field label="Title" v-model="editedItem.title"
-                                                              outlined></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col>
-                                                <v-textarea label="Content" v-model="editedItem.body"
-                                                            outlined></v-textarea>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text @click="closeEditDialog">Cancel</v-btn>
-                                    <v-btn text @click="saveEdit">Save</v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                    </v-toolbar>
-                </template>
-                <template v-slot:item.userId="{item}">
-                    {{getUserData[item.userId,'username']}}
-                </template>
-                <template v-slot:item.edit="{item}">
-                    <font-awesome-icon icon="edit" @click.stop="openEditDialog(item)"></font-awesome-icon>
-                </template>
-            </v-data-table>
+        <v-content class="mx-2">
+            <v-row class="justify-center">
+                <v-col cols="12" xl="6" lg="8" md="10" sm="12" xs="12">
+                    <v-data-table v-if="dataReady" :loading="!dataReady" loading-text="Nothing here :("
+                                  class="elevation-1"
+                                  :headers="headers" :items-per-page="10"
+                                  :items="posts">
+                        <template v-slot:top>
+                            <v-toolbar flat>
+                                <v-toolbar-title>Posts</v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <v-dialog v-model="dialog" persistent max-width="600px">
+                                    <v-card>
+                                        <v-card-title>
+                                            <span>Post #{{currentPostId}}</span>
+                                        </v-card-title>
+                                        <v-divider class="my-2"></v-divider>
+                                        <v-card-text>
+                                            <v-container class="body-1 text--secondary">
+                                                <v-row>
+                                                    <v-col>
+                                                        <font-awesome-icon class="title text--primary"
+                                                                           icon="user"></font-awesome-icon>
+                                                        {{editedItem.name}}
+                                                    </v-col>
+                                                    <v-col>
+                                                        <font-awesome-icon class="title text--primary"
+                                                                           icon="at"></font-awesome-icon>
+                                                        {{editedItem.username}}
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <font-awesome-icon class="title text--primary"
+                                                                           icon="envelope"></font-awesome-icon>
+                                                        {{editedItem.email}}
+                                                    </v-col>
+                                                    <v-col>
+                                                        <font-awesome-icon class="title text--primary"
+                                                                           icon="phone"></font-awesome-icon>
+                                                        {{editedItem.phone}}
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <font-awesome-icon class="title text--primary"
+                                                                           icon="map-marked"></font-awesome-icon>
+                                                        {{editedItem.address.suite}} {{editedItem.address.street}},
+                                                        {{editedItem.address.city}} {{editedItem.address.zipcode}}
+                                                    </v-col>
+                                                </v-row>
+                                                <v-divider class="my-8"></v-divider>
+                                                <v-row>
+                                                    <v-col>
+                                                        <v-text-field label="Title" v-model="editedItem.title"
+                                                                      outlined></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <v-textarea label="Content" v-model="editedItem.body"
+                                                                    outlined></v-textarea>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-container>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn text @click="closeEditDialog">Cancel</v-btn>
+                                            <v-btn text @click="saveEdit">Save</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                            </v-toolbar>
+                        </template>
+                        <template v-slot:item.userId="{item}">
+                            {{getUserData(item.userId,'username')}}
+                        </template>
+                        <template v-slot:item.edit="{item}">
+                            <font-awesome-icon icon="edit" @click.stop="openEditDialog(item)"></font-awesome-icon>
+                        </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
             <v-snackbar v-model="notification">{{text}}
                 <v-btn text @click="notification=false"></v-btn>
             </v-snackbar>
