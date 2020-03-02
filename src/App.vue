@@ -1,28 +1,19 @@
-<template lang="html">
-    <div id="app" class="top-navbar">
-        <v-app-bar>
+<template>
+    <v-app>
+        <v-app-bar app color="primary" dark>
             <v-toolbar-title>TownSq</v-toolbar-title>
         </v-app-bar>
-        <main>
-            <v-data-table loading loading-text="Nothing here :(" :data="posts">
-                <template slot="header">
-                    <h3>Posts</h3>
+        <v-content>
+            <v-data-table @click:row="openEditDialog" class="elevation-1" :headers="headers" :items-per-page="15"
+                          :items="posts">
+                <template v-slot:item.userId="{item}">
+                    {{getUserData(item.userId).username}}
                 </template>
-                <template slot="thead">
-                    <vs-th>ID</vs-th>
-                    <vs-th>Created by</vs-th>
-                    <vs-th>Title</vs-th>
-                </template>
-                <template slot-scope="{data}">
-                    <vs-tr :key="index" v-for="(post, index) in data">
-                        <vs-td>{{data[index].id}}</vs-td>
-                        <vs-td>{{getUserData(data[index].userId).username}}</vs-td>
-                        <vs-td>{{data[index].title}}</vs-td>
-                    </vs-tr>
-                </template>
+                <v-dialog v-model="dialog" persistent>
+                </v-dialog>
             </v-data-table>
-        </main>
-    </div>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -34,16 +25,22 @@
     let users = {};
 
     export default {
+        name: 'App',
         data() {
             return {
-                loading: true,
-                posts: posts,
-                users: users
+                dialog: false,
+                headers: [
+                    {text: 'ID', align: 'center', value: 'id'},
+                    {text: 'Created By', align: 'center', value: 'userId'},
+                    {text: 'Title', align: 'center', value: 'title'}
+                ],
+                posts: posts
             };
         },
         methods: {
-            openEditDialog() {
-                alert('eita');
+            openEditDialog(row) {
+                this.dialog = true;
+                console.log(row);
             },
             getUserData(userId) {
                 return users[userId];
@@ -63,10 +60,8 @@
         },
         mounted() {
             axios.all([
-                axios
-                    .get('http://jsonplaceholder.typicode.com/posts', {validateStatus: this.validateStatus}),
-                axios
-                    .get('http://jsonplaceholder.typicode.com/users', {validateStatus: this.validateStatus})
+                axios.get('http://jsonplaceholder.typicode.com/posts', {validateStatus: this.validateStatus}),
+                axios.get('http://jsonplaceholder.typicode.com/users', {validateStatus: this.validateStatus})
             ])
                 .then(axios.spread((responsePosts, responseUsers) => {
                     this.posts = responsePosts.data;
@@ -76,12 +71,8 @@
                     this.loading = false;
                 }))
                 .catch(this.axiosError);
-            //.then((responseUsers) => {
-            //})
-            //.catch(this.axiosError);
         }
-    }
-    ;
+    };
 </script>
 
 <style lang="scss">
