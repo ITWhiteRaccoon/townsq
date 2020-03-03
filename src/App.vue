@@ -157,7 +157,7 @@
             openEditDialog(item) {
                 this.currentPostId = item.id;
                 this.editedIndex = this.posts.indexOf(item);
-                this.editedItem = Object.assign({}, item, this.users[item.id]);
+                this.editedItem = Object.assign({}, item, this.users[item.userId]);
                 this.dialog = true;
             },
             closeEditDialog() {
@@ -209,7 +209,9 @@
             ])
                 .then(axios.spread((responsePosts, responseUsers) => {
                     for (let i = 0; i < responseUsers.data.length; i++) {
-                        this.users[responseUsers.data[i].id] = responseUsers.data[i];
+                        let userId = responseUsers.data[i].id;
+                        delete responseUsers.data[i].id;
+                        this.users[userId] = responseUsers.data[i];
                     }
                     this.posts = responsePosts.data;
                     this.dataReady = true;
