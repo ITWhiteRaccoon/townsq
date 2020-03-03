@@ -204,8 +204,8 @@
         },
         mounted() {
             axios.all([
-                axios.get('http://jsonplaceholder.typicode.com/posts', {validateStatus: this.validateStatus}),
-                axios.get('http://jsonplaceholder.typicode.com/users', {validateStatus: this.validateStatus})
+                axios.get('https://jsonplaceholder.typicode.com/posts', {validateStatus: this.validateStatus}),
+                axios.get('https://jsonplaceholder.typicode.com/users', {validateStatus: this.validateStatus})
             ])
                 .then(axios.spread((responsePosts, responseUsers) => {
                     for (let i = 0; i < responseUsers.data.length; i++) {
